@@ -1,3 +1,4 @@
+import Data.List
 -- modelado de autos
 
 data Auto = Auto {  nombre :: String,
@@ -39,4 +40,21 @@ rodra = Auto {  nombre = "rodra",
 deReversaRocha auto = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
 impresionar auto = auto{velocidad = ((*2).velocidad)auto }
 nitro auto = auto{velocidad = ((+15).velocidad)auto}
-fingirAmor auto nombre = auto{nombreDelEnamorado = nombre} 
+fingirAmor auto nombre = auto{nombreDelEnamorado = nombre}
+
+-- incrementar velocidad
+between cotaInferior cotaSuperior numero = (numero >= cotaInferior)&& (numero <= cotaSuperior)
+
+esVocalA = filter(== 'a')
+esVocalE = filter(== 'e')
+esVocalI = filter(== 'i')
+esVocalO = filter(== 'o')
+esVocalU = filter(== 'u')
+
+contarVocales auto = (length.concat) (map ($ (nombreDelEnamorado auto)) [esVocalA,esVocalE,esVocalI,esVocalO,esVocalU])
+
+
+incrementarVelocidad auto
+  | ((between 1 2).contarVocales) auto = auto{velocidad = ((+15).velocidad)auto}
+  | ((between 3 4).contarVocales) auto = auto{velocidad = ((+20).velocidad)auto}
+  | ((4<).contarVocales) auto = auto{velocidad = ((+30).velocidad)auto}
