@@ -99,5 +99,13 @@ puedeRealizarTruco rochaMcQueen
 puedeRealizarTruco gushtav
 puedeRealizarTruco rodra
 
+tests punto 3.4
 
+(nivelDeNafta.comboLoco) rochaMcQueen
+(velocidad.comboLoco) rochaMcQueen
+(velocidad.(flip queTrucazo "murcielago")) rodra
+(velocidad.turbo) gushtav
+(nivelDeNafta.turbo) gushtav
+(velocidad.turbo) rodra
+(nivelDeNafta.turbo) rodra
 -}
