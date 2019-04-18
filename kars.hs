@@ -75,3 +75,15 @@ comboLoco = (deReversaRocha.nitro)
 cambiarDeEnamorado unAuto enamorado = unAuto{nombreDelEnamorado = enamorado }
 queTrucazo unAuto =  incrementarVelocidad.(cambiarDeEnamorado unAuto)
 turbo unAuto = unAuto {velocidad = ((velocidad unAuto ) + (((10*).nivelDeNafta)) unAuto), nivelDeNafta = 0}
+
+{-
+
+tests punto 3.1
+
+(nivelDeNafta.deReversaRocha) rochaMcQueen
+(velocidad.impresionar) bienkerr
+(velocidad.nitro) gushtav
+(nombreDelEnamorado.(flip fingirAmor "petra")) rodra
+
+
+-}
