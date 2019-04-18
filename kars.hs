@@ -85,5 +85,11 @@ tests punto 3.1
 (velocidad.nitro) gushtav
 (nombreDelEnamorado.(flip fingirAmor "petra")) rodra
 
+tests punto 3.2
+
+(velocidad.incrementarVelocidad) rochaMcQueen
+(velocidad.incrementarVelocidad) biankerr
+(velocidad.incrementarVelocidad) gushtav
+(velocidad.incrementarVelocidad) rodra
 
 -}
