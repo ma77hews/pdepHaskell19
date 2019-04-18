@@ -92,4 +92,12 @@ tests punto 3.2
 (velocidad.incrementarVelocidad) gushtav
 (velocidad.incrementarVelocidad) rodra
 
+
+tests punto 3.3
+
+puedeRealizarTruco rochaMcQueen
+puedeRealizarTruco gushtav
+puedeRealizarTruco rodra
+
+
 -}
