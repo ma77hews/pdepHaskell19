@@ -1,6 +1,7 @@
-type Truco = Auto
+-- modelado de autos
+
 data Auto = Auto {  nombre :: String,
-                    nivelDeNafta :: Int,
+                    nivelDeNafta :: Float,
                     velocidad :: Int,
                     nombreDelEnamorado :: String
                     --truco :: Truco
@@ -10,12 +11,12 @@ rochaMcQueen = Auto { nombre = "rochaMcQueen",
                       nivelDeNafta = 300,
                       velocidad = 0,
                       nombreDelEnamorado = "ronco"
-                      --truco = deReversa
+                      --truco = deReversaRocha
                     }
 
 biankerr = Auto { nombre ="biankerr",
                   nivelDeNafta = 500,
-                  velocidad = 0,
+                  velocidad = 20,
                   nombreDelEnamorado = "tinch"
                   --truco = impresionar
                   }
@@ -31,3 +32,11 @@ rodra = Auto {  nombre = "rodra",
                 nombreDelEnamorado = "taisa"
                 --truco = fingirAmor(petra)
                 }
+
+
+-- modelado de trucos de los autos
+
+deReversaRocha auto = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
+impresionar auto = auto{velocidad = ((*2).velocidad)auto }
+nitro auto = auto{velocidad = ((+15).velocidad)auto}
+fingirAmor auto nombre = auto{nombreDelEnamorado = nombre} 
