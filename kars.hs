@@ -3,7 +3,7 @@ import Data.List
 
 data Auto = Auto {  nombre :: String,
                     nivelDeNafta :: Float,
-                    velocidad :: Int,
+                    velocidad :: Float,
                     nombreDelEnamorado :: String
                     --truco :: Truco
                     } deriving Show
@@ -58,3 +58,15 @@ incrementarVelocidad auto
   | ((between 1 2).contarVocales) auto = auto{velocidad = ((+15).velocidad)auto}
   | ((between 3 4).contarVocales) auto = auto{velocidad = ((+20).velocidad)auto}
   | ((4<).contarVocales) auto = auto{velocidad = ((+30).velocidad)auto}
+
+
+-- punto 3
+tieneNaftaEnElTanque  unAuto = ((0<).nivelDeNafta) unAuto
+velocidadMenorA100 unAuto = ((100>).velocidad) unAuto
+puedeRealizarTruco unAuto = (tieneNaftaEnElTanque unAuto) && (velocidadMenorA100 unAuto)
+
+-- punto 4
+comboLoco = (nitro.deReversaRocha)
+cambiarDeEnamorado unAuto enamorado = unAuto{nombreDelEnamorado = enamorado }
+queTrucazo unAuto =  incrementarVelocidad.(cambiarDeEnamorado unAuto)
+turbo unAuto = unAuto {velocidad = ((velocidad unAuto ) + (((10*).nivelDeNafta)) unAuto)}
