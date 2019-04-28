@@ -1,48 +1,63 @@
 -- punto 1 parte a
 -- modelado de autos
 
+import Text.Show.Functions
+
+type Truco = Auto -> Auto
+
 data Auto = Auto {  nombre :: String,
                     nivelDeNafta :: Float,
                     velocidad :: Float,
-                    nombreDelEnamorado :: String
-                    --truco :: Truco
+                    nombreDelEnamorado :: String,
+                    truco :: Truco
                     } deriving Show
 
 rochaMcQueen = Auto { nombre = "rochaMcQueen",
                       nivelDeNafta = 300,
                       velocidad = 0,
-                      nombreDelEnamorado = "ronco"
-                      --truco = deReversaRocha
+                      nombreDelEnamorado = "ronco",
+                      truco = deReversaRocha
                     }
 
 biankerr = Auto { nombre ="biankerr",
                   nivelDeNafta = 500,
                   velocidad = 20,
-                  nombreDelEnamorado = "tinch"
-                  --truco = impresionar
+                  nombreDelEnamorado = "tinch",
+                  truco = impresionar
                   }
 
 gushtav = Auto { nombre = "gushtav",
                  nivelDeNafta = 200,
                  velocidad = 130,
-                 nombreDelEnamorado = "petiLaLinta"
-                 --truco = nitro
+                 nombreDelEnamorado = "petiLaLinta",
+                 truco = nitro
                 }
 
 rodra = Auto {  nombre = "rodra",
                 nivelDeNafta = 0,
                 velocidad = 50,
-                nombreDelEnamorado = "taisa"
-                --truco = fingirAmor(petra)
+                nombreDelEnamorado = "taisa",
+                truco = fingirAmor("petra")
                 }
 
 -- punto 1 parte b
 -- modelado de trucos de los autos
 
-deReversaRocha auto = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
-impresionar auto = auto{velocidad = ((*2).velocidad)auto }
-nitro auto = auto{velocidad = ((+15).velocidad)auto}
-fingirAmor auto nombre = auto{nombreDelEnamorado = nombre}
+deReversaRocha :: Auto -> Auto
+deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
+
+modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
+
+impresionar :: Auto -> Auto
+impresionar = modificarVelocidad (*2)
+--impresionar auto = auto{velocidad = ((*2).velocidad)auto }
+
+nitro :: Auto -> Auto
+nitro = modificarVelocidad (+15)
+--nitro auto = auto{velocidad = ((+15).velocidad)auto}
+
+fingirAmor :: String -> Auto -> Auto
+fingirAmor nombre auto = auto{nombreDelEnamorado = nombre}
 
 
 --punto 2
