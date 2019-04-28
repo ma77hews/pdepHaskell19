@@ -43,6 +43,7 @@ rodra = Auto {  nombre = "rodra",
 -- punto 1 parte b
 -- modelado de trucos de los autos
 
+
 deReversaRocha :: Auto -> Auto
 deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
 
@@ -62,19 +63,29 @@ fingirAmor nombre auto = auto{nombreDelEnamorado = nombre}
 
 --punto 2
 -- incrementar velocidad
-between cotaInferior cotaSuperior numero = (numero >= cotaInferior)&& (numero <= cotaSuperior)
 
+contarVocales = length.filter (\letra->elem letra "aeiouAEIOU")
+{-
 contarVocales auto = (length.concat) (map ($ (nombreDelEnamorado auto)) [esVocalA,esVocalE,esVocalI,esVocalO,esVocalU])
 esVocalA = filter(== 'a')
 esVocalE = filter(== 'e')
 esVocalI = filter(== 'i')
 esVocalO = filter(== 'o')
 esVocalU = filter(== 'u')
+-}
+
+
+--modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
+-- between nos dice si un numero esta entre otros dos
+between cotaInferior cotaSuperior numero = (numero >= cotaInferior)&& (numero <= cotaSuperior)
+cantidadDeVocalesEnamoradoEntre cotaInferior cotaSuperior = (between cotaInferior cotaSuperior).contarVocales.nombreDelEnamorado
+
+
 
 incrementarVelocidad auto
-  | ((between 1 2).contarVocales) auto = auto{velocidad = ((+15).velocidad)auto}
-  | ((between 3 4).contarVocales) auto = auto{velocidad = ((+20).velocidad)auto}
-  | ((4<).contarVocales) auto = auto{velocidad = ((+30).velocidad)auto}
+  | cantidadDeVocalesEnamoradoEntre 1 2 auto = modificarVelocidad (+15) auto
+  | cantidadDeVocalesEnamoradoEntre 3 4 auto = modificarVelocidad (+20) auto
+  | ((4<).contarVocales.nombreDelEnamorado) auto = modificarVelocidad (+30) auto
 
 
 -- punto 3
