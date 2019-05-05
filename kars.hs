@@ -3,9 +3,13 @@
 
 import Text.Show.Functions
 
+-- tipos
 type Truco = Auto -> Auto
 type Trampa = Carrera -> Carrera
 
+
+
+-- datas
 data Auto = Auto {  nombre :: String,
                     nivelDeNafta :: Float,
                     velocidad :: Float,
@@ -19,7 +23,7 @@ data Carrera = Carrera { cantidadDeVueltas :: Int,
                          trampa :: Trampa,
                          participantes :: [Auto]
                          } deriving Show
-
+--  competidores
 rochaMcQueen = Auto { nombre = "rochaMcQueen",
                       nivelDeNafta = 300,
                       velocidad = 0,
@@ -48,6 +52,8 @@ rodra = Auto {  nombre = "rodra",
                 truco = fingirAmor("petra")
                 }
 
+
+-- carreras
 potreroFunes = Carrera { cantidadDeVueltas = 3,
                          longitudDeLaPista = 0.5,
                          nombresDelPublico = ["ronco", "tinch", "dodain"],
@@ -56,48 +62,45 @@ potreroFunes = Carrera { cantidadDeVueltas = 3,
                          }
 
 
--- punto 1 parte b
--- modelado de trucos de los autos
+-- funciones auxiliares de modificaciones
+modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
+modificarNafta calculo auto = auto{nivelDeNafta = (calculo.nivelDeNafta)auto}
 
+-- trucos
+porcentajeDeLaNafta unPorcentaje auto = ((unPorcentaje*).velocidad) auto
 
 deReversaRocha :: Truco
-porcentajeDeLaNafta unPorcentaje auto = ((unPorcentaje*).nivelDeNafta) auto
 deReversaRocha auto = auto {nivelDeNafta =  (nivelDeNafta auto + (porcentajeDeLaNafta 0.2 auto)) }
---deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
-modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
 
 impresionar :: Truco
 impresionar = modificarVelocidad (*2)
---impresionar auto = auto{velocidad = ((*2).velocidad)auto }
 
 nitro :: Truco
 nitro = modificarVelocidad (+15)
---nitro auto = auto{velocidad = ((+15).velocidad)auto}
 
 fingirAmor :: String -> Truco
 fingirAmor nombre auto = auto{nombreDelEnamorado = nombre}
 
+comboLoco :: Truco
+comboLoco = (deReversaRocha.nitro)
+
+cambiarDeEnamorado :: String -> Truco
+cambiarDeEnamorado enamorado unAuto  = unAuto{nombreDelEnamorado = enamorado }
+
+queTrucazo :: String -> Truco
+queTrucazo unNombre  = incrementarVelocidad.(cambiarDeEnamorado unNombre)
+
+turbo :: Truco
+turbo unAuto = unAuto {velocidad = ((velocidad unAuto ) + (((10*).nivelDeNafta)) unAuto), nivelDeNafta = 0}
 
 --punto 2
 -- incrementar velocidad
 
 contarVocales = length.filter (\letra->elem letra "aeiouAEIOU")
-{-
-contarVocales auto = (length.concat) (map ($ (nombreDelEnamorado auto)) [esVocalA,esVocalE,esVocalI,esVocalO,esVocalU])
-esVocalA = filter(== 'a')
-esVocalE = filter(== 'e')
-esVocalI = filter(== 'i')
-esVocalO = filter(== 'o')
-esVocalU = filter(== 'u')
--}
 
-
---modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
 -- between nos dice si un numero esta entre otros dos
 between cotaInferior cotaSuperior numero = (numero >= cotaInferior)&& (numero <= cotaSuperior)
 cantidadDeVocalesEnamoradoEntre cotaInferior cotaSuperior = (between cotaInferior cotaSuperior).contarVocales.nombreDelEnamorado
-
-
 
 incrementarVelocidad auto
   | cantidadDeVocalesEnamoradoEntre 1 2 auto = modificarVelocidad (+15) auto
@@ -111,58 +114,15 @@ tieneNaftaEnElTanque  unAuto = ((0<).nivelDeNafta) unAuto
 velocidadMenorA100 unAuto = ((100>).velocidad) unAuto
 puedeRealizarTruco unAuto = (tieneNaftaEnElTanque unAuto) && (velocidadMenorA100 unAuto)
 
--- punto 4
--- nuevos trucos
 
-comboLoco = (deReversaRocha.nitro)
-cambiarDeEnamorado unAuto enamorado = unAuto{nombreDelEnamorado = enamorado }
-queTrucazo unAuto =  incrementarVelocidad.(cambiarDeEnamorado unAuto)
-turbo unAuto = unAuto {velocidad = ((velocidad unAuto ) + (((10*).nivelDeNafta)) unAuto), nivelDeNafta = 0}
+-- funciones varias
+modificarParticipantes funcion carrera = carrera {participantes = funcion (participantes carrera)}
 
-{-
-
-tests punto 3.1
-
-(nivelDeNafta.deReversaRocha) rochaMcQueen
-(velocidad.impresionar) bienkerr
-(velocidad.nitro) gushtav
-(nombreDelEnamorado.(flip fingirAmor "petra")) rodra
-
-tests punto 3.2
-
-(velocidad.incrementarVelocidad) rochaMcQueen
-(velocidad.incrementarVelocidad) biankerr
-(velocidad.incrementarVelocidad) gushtav
-(velocidad.incrementarVelocidad) rodra
-
-
-tests punto 3.3
-
-puedeRealizarTruco rochaMcQueen
-puedeRealizarTruco gushtav
-puedeRealizarTruco rodra
-
-tests punto 3.4
-
-(nivelDeNafta.comboLoco) rochaMcQueen
-(velocidad.comboLoco) rochaMcQueen
-(velocidad.(flip queTrucazo "murcielago")) rodra
-(velocidad.turbo) gushtav
-(nivelDeNafta.turbo) gushtav
-(velocidad.turbo) rodra
-(nivelDeNafta.turbo) rodra
--}
-
-
--- tp parte 2
+nivelCriticoDeNafta = (<30).nivelDeNafta
+-- trampas
 
 sacarAlPistero :: Trampa
 sacarAlPistero carrera = carrera {participantes = (tail.participantes) carrera}
-
---modificarParticipantes funcion carrera = carrera {participantes = map funcion (participantes carrera)}
-modificarParticipantes funcion carrera = carrera {participantes = funcion (participantes carrera)}
---sacarParticipantes funcion carrera = carrera {participantes = filter funcion (participantes carrera)}
-
 
 lluvia :: Trampa
 lluvia  = modificarParticipantes (map (modificarVelocidad (+ (-15))))
@@ -176,11 +136,11 @@ noHacerNada unAuto = unAuto {truco = inutilidad}
 neutralizarTrucos :: Trampa
 neutralizarTrucos = modificarParticipantes (map noHacerNada)
 
-nivelCriticoDeNafta = (<30).nivelDeNafta
-
-
 pocaReserva :: Trampa
 pocaReserva  = modificarParticipantes (filter (not.nivelCriticoDeNafta))
 
 podio :: Trampa
 podio = modificarParticipantes (take 3)
+
+
+-- a correr
