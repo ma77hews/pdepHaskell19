@@ -5,6 +5,7 @@ import Text.Show.Functions
 
 type Truco = Auto -> Auto
 type Trampa = Carrera -> Carrera
+
 data Auto = Auto {  nombre :: String,
                     nivelDeNafta :: Float,
                     velocidad :: Float,
@@ -17,7 +18,7 @@ data Carrera = Carrera { cantidadDeVueltas :: Int,
                          nombresDelPublico :: [String],
                          trampa :: Trampa,
                          participantes :: [Auto]
-                         }
+                         } deriving Show
 
 rochaMcQueen = Auto { nombre = "rochaMcQueen",
                       nivelDeNafta = 300,
@@ -54,25 +55,26 @@ potreroFunes = Carrera { cantidadDeVueltas = 3,
                          participantes = [rochaMcQueen, biankerr, gushtav, rodra]
                          }
 
+
 -- punto 1 parte b
 -- modelado de trucos de los autos
 
 
-deReversaRocha :: Auto -> Auto
+deReversaRocha :: Truco
 porcentajeDeLaNafta unPorcentaje auto = ((unPorcentaje*).nivelDeNafta) auto
 deReversaRocha auto = auto {nivelDeNafta =  (nivelDeNafta auto + (porcentajeDeLaNafta 0.2 auto)) }
 --deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
 modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
 
-impresionar :: Auto -> Auto
+impresionar :: Truco
 impresionar = modificarVelocidad (*2)
 --impresionar auto = auto{velocidad = ((*2).velocidad)auto }
 
-nitro :: Auto -> Auto
+nitro :: Truco
 nitro = modificarVelocidad (+15)
 --nitro auto = auto{velocidad = ((+15).velocidad)auto}
 
-fingirAmor :: String -> Auto -> Auto
+fingirAmor :: String -> Truco
 fingirAmor nombre auto = auto{nombreDelEnamorado = nombre}
 
 
@@ -150,3 +152,35 @@ tests punto 3.4
 (velocidad.turbo) rodra
 (nivelDeNafta.turbo) rodra
 -}
+
+
+-- tp parte 2
+
+sacarAlPistero :: Trampa
+sacarAlPistero carrera = carrera {participantes = (tail.participantes) carrera}
+
+--modificarParticipantes funcion carrera = carrera {participantes = map funcion (participantes carrera)}
+modificarParticipantes funcion carrera = carrera {participantes = funcion (participantes carrera)}
+--sacarParticipantes funcion carrera = carrera {participantes = filter funcion (participantes carrera)}
+
+
+lluvia :: Trampa
+lluvia  = modificarParticipantes (map (modificarVelocidad (+ (-15))))
+
+inutilidad :: Truco
+inutilidad = id
+
+noHacerNada :: Truco
+noHacerNada unAuto = unAuto {truco = inutilidad}
+
+neutralizarTrucos :: Trampa
+neutralizarTrucos = modificarParticipantes (map noHacerNada)
+
+nivelCriticoDeNafta = (<30).nivelDeNafta
+
+
+pocaReserva :: Trampa
+pocaReserva  = modificarParticipantes (filter (not.nivelCriticoDeNafta))
+
+podio :: Trampa
+podio = modificarParticipantes (take 3)
