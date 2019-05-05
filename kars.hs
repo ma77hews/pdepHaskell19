@@ -47,6 +47,13 @@ rodra = Auto {  nombre = "rodra",
                 truco = fingirAmor("petra")
                 }
 
+potreroFunes = Carrera { cantidadDeVueltas = 3,
+                         longitudDeLaPista = 0.5,
+                         nombresDelPublico = ["ronco", "tinch", "dodain"],
+                         trampa  = sacarAlPistero,
+                         participantes = [rochaMcQueen, biankerr, gushtav, rodra]
+                         }
+
 -- punto 1 parte b
 -- modelado de trucos de los autos
 
