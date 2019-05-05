@@ -4,13 +4,20 @@
 import Text.Show.Functions
 
 type Truco = Auto -> Auto
-
+type Trampa = Carrera -> Carrera
 data Auto = Auto {  nombre :: String,
                     nivelDeNafta :: Float,
                     velocidad :: Float,
                     nombreDelEnamorado :: String,
                     truco :: Truco
                     } deriving Show
+
+data Carrera = Carrera { cantidadDeVueltas :: Int,
+                         longitudDeLaPista :: Float,
+                         nombresDelPublico :: [String],
+                         trampa :: Trampa,
+                         participantes :: [Auto]
+                         }
 
 rochaMcQueen = Auto { nombre = "rochaMcQueen",
                       nivelDeNafta = 300,
@@ -45,8 +52,9 @@ rodra = Auto {  nombre = "rodra",
 
 
 deReversaRocha :: Auto -> Auto
-deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
-
+porcentajeDeLaNafta unPorcentaje auto = ((unPorcentaje*).nivelDeNafta) auto
+deReversaRocha auto = auto {nivelDeNafta =  (nivelDeNafta auto + (porcentajeDeLaNafta 0.2 auto)) }
+--deReversaRocha auto  = auto {nivelDeNafta = ((+(0.20 * 1000)).nivelDeNafta)auto }
 modificarVelocidad calculo auto = auto{velocidad = (calculo.velocidad)auto}
 
 impresionar :: Auto -> Auto
