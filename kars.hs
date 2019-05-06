@@ -55,7 +55,7 @@ rodra = Auto {  nombre = "rodra",
 
 -- carreras
 potreroFunes = Carrera { cantidadDeVueltas = 3,
-                         longitudDeLaPista = 0.5,
+                         longitudDeLaPista = 5.0,
                          nombresDelPublico = ["ronco", "tinch", "dodain"],
                          trampa  = sacarAlPistero,
                          participantes = [rochaMcQueen, biankerr, gushtav, rodra]
@@ -70,7 +70,8 @@ modificarNafta calculo auto = auto{nivelDeNafta = (calculo.nivelDeNafta)auto}
 porcentajeDeLaNafta unPorcentaje auto = ((unPorcentaje*).velocidad) auto
 
 deReversaRocha :: Truco
-deReversaRocha auto = auto {nivelDeNafta =  (nivelDeNafta auto + (porcentajeDeLaNafta 0.2 auto)) }
+deReversaRocha auto = modificarNafta (+calculoDeReversa auto) auto
+calculoDeReversa auto =  porcentajeDeLaNafta 0.2 auto
 
 impresionar :: Truco
 impresionar = modificarVelocidad (*2)
@@ -116,13 +117,13 @@ puedeRealizarTruco unAuto = (tieneNaftaEnElTanque unAuto) && (velocidadMenorA100
 
 
 -- funciones varias
-modificarParticipantes funcion carrera = carrera {participantes = funcion (participantes carrera)}
+modificarParticipantes funcion carrera = carrera {participantes = (funcion.participantes) carrera}
 
 nivelCriticoDeNafta = (<30).nivelDeNafta
 -- trampas
 
 sacarAlPistero :: Trampa
-sacarAlPistero carrera = carrera {participantes = (tail.participantes) carrera}
+sacarAlPistero carrera = modificarParticipantes tail carrera
 
 lluvia :: Trampa
 lluvia  = modificarParticipantes (map (modificarVelocidad (+ (-10))))
@@ -144,18 +145,21 @@ podio = modificarParticipantes (take 3)
 
 
 -- a correr
-
 modificarNaftaBis valor auto = auto{nivelDeNafta = ((+(-(valor/10*velocidad auto))).nivelDeNafta)auto}
-vueltaDeParticipantes unaCarrera = map (modificarNaftaBis (longitudDeLaPista unaCarrera)) (participantes unaCarrera)
-carreraParte1 unaCarrera = unaCarrera {participantes = vueltaDeParticipantes unaCarrera}
+modificarParticipantesEnCarrera funcion carrera = carrera {participantes = funcion carrera}
+modificarATodos funcion carrera = map funcion (participantes carrera)
+
+vueltaDeParticipantesBis unaCarrera = modificarATodos (modificarNaftaBis(longitudDeLaPista unaCarrera)) unaCarrera
+carreraParte1  = modificarParticipantesEnCarrera vueltaDeParticipantesBis
+
 
 enamoradoEnElPublico unaCarrera unAuto = elem (nombreDelEnamorado unAuto) (nombresDelPublico unaCarrera)
 siEstaEnElPublico unaCarrera unAuto
   | puedeRealizarTruco unAuto && enamoradoEnElPublico unaCarrera unAuto = (truco unAuto) unAuto
   | otherwise = unAuto
 
-parte2 unaCarrera = map (siEstaEnElPublico unaCarrera) (participantes unaCarrera)
-carreraParte2 unaCarrera = unaCarrera {participantes = parte2 unaCarrera}
+parte2 unaCarrera = (modificarATodos.siEstaEnElPublico) unaCarrera unaCarrera
+carreraParte2  = modificarParticipantesEnCarrera parte2
 
 carreraParte3 unaCarrera = (trampa unaCarrera) unaCarrera
 
