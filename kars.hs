@@ -46,7 +46,7 @@ gushtav = Auto { nombre = "gushtav",
                 }
 
 rodra = Auto {  nombre = "rodra",
-                nivelDeNafta = 0,
+                nivelDeNafta = 10,
                 velocidad = 50,
                 nombreDelEnamorado = "taisa",
                 truco = fingirAmor("petra")
@@ -125,7 +125,7 @@ sacarAlPistero :: Trampa
 sacarAlPistero carrera = carrera {participantes = (tail.participantes) carrera}
 
 lluvia :: Trampa
-lluvia  = modificarParticipantes (map (modificarVelocidad (+ (-15))))
+lluvia  = modificarParticipantes (map (modificarVelocidad (+ (-10))))
 
 inutilidad :: Truco
 inutilidad = id
@@ -144,3 +144,26 @@ podio = modificarParticipantes (take 3)
 
 
 -- a correr
+
+modificarNaftaBis valor auto = auto{nivelDeNafta = ((+(-(valor/10*velocidad auto))).nivelDeNafta)auto}
+vueltaDeParticipantes unaCarrera = map (modificarNaftaBis (longitudDeLaPista unaCarrera)) (participantes unaCarrera)
+carreraParte1 unaCarrera = unaCarrera {participantes = vueltaDeParticipantes unaCarrera}
+
+enamoradoEnElPublico unaCarrera unAuto = elem (nombreDelEnamorado unAuto) (nombresDelPublico unaCarrera)
+siEstaEnElPublico unaCarrera unAuto
+  | puedeRealizarTruco unAuto && enamoradoEnElPublico unaCarrera unAuto = (truco unAuto) unAuto
+  | otherwise = unAuto
+
+parte2 unaCarrera = map (siEstaEnElPublico unaCarrera) (participantes unaCarrera)
+carreraParte2 unaCarrera = unaCarrera {participantes = parte2 unaCarrera}
+
+carreraParte3 unaCarrera = (trampa unaCarrera) unaCarrera
+
+darVuelta unaCarrera = foldl1 (.)  [carreraParte1, carreraParte2, carreraParte3] unaCarrera
+correrCarrera unaCarrera =  iterate darVuelta unaCarrera
+
+
+
+
+
+elGranTruco listaDeTrucos unAuto = foldl1 (.) (reverse listaDeTrucos) unAuto
